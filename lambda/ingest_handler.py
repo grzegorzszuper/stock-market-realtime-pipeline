@@ -4,7 +4,7 @@ import base64
 import boto3
 import logging
 from datetime import datetime
-from decimal import Decimal  # ⬅️ NOWE
+from decimal import Decimal
 
 log = logging.getLogger()
 log.setLevel(logging.INFO)
@@ -30,9 +30,12 @@ def lambda_handler(event, context):
             payload = json.loads(text)
 
             symbol = str(payload["symbol"])
-            # 👇 DynamoDB chce Decimal, nie float
-            price  = Decimal(str(payload["price"]))
-            ts     = str(payload.get("timestamp") or (datetime.utcnow().isoformat() + "Z"))
+            # twarda konwersja na Decimal
+            price = Decimal(str(payload["price"]))
+            ts = str(payload.get("timestamp") or (datetime.utcnow().isoformat() + "Z"))
+
+            # pomocniczy log — jaki typ ma price (powinno być <class 'decimal.Decimal'>)
+            log.info(f"type(price)={type(price)} value={price}")
 
             # RAW → S3
             key = f"raw/{datetime.utcnow().strftime('%Y/%m/%d/%H%M%S_%f')}.json"
