@@ -49,3 +49,43 @@ resource "aws_iam_role_policy_attachment" "lambda_ingest_attach" {
   role       = aws_iam_role.lambda_basic_role.name
   policy_arn = aws_iam_policy.lambda_ingest_rw.arn
 }
+
+# Pozwól Lambdzie czytać z Kinesis (consumption permissions)
+resource "aws_iam_policy" "lambda_kinesis_read" {
+  name        = "lambda_kinesis_read"
+  description = "Allow Lambda to read from the Kinesis data stream"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect: "Allow",
+        Action: [
+          "kinesis:DescribeStream",
+          "kinesis:DescribeStreamSummary",
+          "kinesis:GetRecords",
+          "kinesis:GetShardIterator",
+          "kinesis:ListShards",
+          "kinesis:ListStreams"
+        ],
+        Resource: aws_kinesis_stream.stock_stream.arn
+      },
+      # Stream jest szyfrowany KMS-em zarządzanym przez AWS, dajmy więc decrypt ograniczony do usługi Kinesis w tym regionie.
+      {
+        Effect: "Allow",
+        Action: ["kms:Decrypt"],
+        Resource: "*",
+        Condition: {
+          "StringEquals": {
+            "kms:ViaService": "kinesis.eu-west-3.amazonaws.com"
+          }
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_kinesis_read_attach" {
+  role       = aws_iam_role.lambda_basic_role.name
+  policy_arn = aws_iam_policy.lambda_kinesis_read.arn
+}
