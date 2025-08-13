@@ -89,3 +89,44 @@ resource "aws_iam_role_policy_attachment" "lambda_kinesis_read_attach" {
   role       = aws_iam_role.lambda_basic_role.name
   policy_arn = aws_iam_policy.lambda_kinesis_read.arn
 }
+
+
+# Rola serwisowa dla Glue
+resource "aws_iam_role" "glue_role" {
+  name = "stock-glue-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Effect = "Allow",
+      Principal = { Service = "glue.amazonaws.com" },
+      Action = "sts:AssumeRole"
+    }]
+  })
+}
+
+# Polityka: Glue może czytać i listować z naszego RAW bucketa
+resource "aws_iam_policy" "glue_s3_read" {
+  name        = "stock-glue-s3-read"
+  description = "Allow Glue crawler to read from RAW S3 bucket"
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect: "Allow",
+        Action: ["s3:ListBucket"],
+        Resource: [aws_s3_bucket.raw_data.arn]
+      },
+      {
+        Effect: "Allow",
+        Action: ["s3:GetObject", "s3:GetObjectVersion"],
+        Resource: ["${aws_s3_bucket.raw_data.arn}/raw/*"]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "glue_attach" {
+  role       = aws_iam_role.glue_role.name
+  policy_arn = aws_iam_policy.glue_s3_read.arn
+}
