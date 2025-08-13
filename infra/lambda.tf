@@ -1,31 +1,26 @@
 data "archive_file" "ingest_zip" {
   type        = "zip"
   source_file = "${path.module}/../lambda/ingest_handler.py"
-  output_path = "${path.module}/../lambda/ingest_lambda.zip"
+  output_path = "${path.module}/ingest_lambda.zip"   # zostaw w katalogu infra
 }
 
 resource "aws_lambda_function" "ingest" {
-  function_name = "stock-ingest-${random_id.bucket_suffix.hex}"
-  role          = aws_iam_role.lambda_basic_role.arn
-  handler       = "ingest_handler.lambda_handler"
-  runtime       = "python3.12"
-  filename      = data.archive_file.ingest_zip.output_path
-  timeout       = 15
-  memory_size   = 256
-  source_code_hash = data.archive_file.ingest_zip.output_base64sha256
+  function_name    = "stock-ingest-${random_id.bucket_suffix.hex}"
+  role             = aws_iam_role.lambda_basic_role.arn
+  handler          = "ingest_handler.lambda_handler"
+  runtime          = "python3.12"
+  filename         = data.archive_file.ingest_zip.output_path
+  source_code_hash = data.archive_file.ingest_zip.output_base64sha256  # ⬅️ wymusza update
 
+  timeout     = 15
+  memory_size = 256
 
   environment {
     variables = {
       RAW_DATA_BUCKET = aws_s3_bucket.raw_data.bucket
       DYNAMODB_TABLE  = aws_dynamodb_table.clean.name
+      # CODE_REV = timestamp()   # (opcjonalnie na 1 deploy, żeby na pewno wymusić)
     }
-  }
-
-  tags = {
-    Project = "stock-pipeline"
-    Purpose = "ingest"
-    Env     = "dev"
   }
 }
 
