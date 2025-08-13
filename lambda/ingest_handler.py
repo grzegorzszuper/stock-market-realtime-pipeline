@@ -23,8 +23,10 @@ def lambda_handler(event, context):
         try:
             # 1) Kinesis → base64 → tekst
             raw_bytes = base64.b64decode(r["kinesis"]["data"])
-            text = raw_bytes.decode("utf-8", errors="replace")
+            text = raw_bytes.decode("utf-8-sig", errors="replace")  # <-- było "utf-8"
             log.info(f"Decoded payload preview: {text[:120]}")
+            payload = json.loads(text)
+
 
             # 2) JSON → dict (walidacja podstawowa)
             payload = json.loads(text)
