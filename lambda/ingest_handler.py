@@ -4,6 +4,7 @@ import base64
 import boto3
 import logging
 from datetime import datetime
+from decimal import Decimal  # ⬅️ NOWE
 
 log = logging.getLogger()
 log.setLevel(logging.INFO)
@@ -21,34 +22,31 @@ def lambda_handler(event, context):
 
     for r in event.get("Records", []):
         try:
-            # 1) Kinesis → base64 → tekst
+            # base64 → tekst (akceptuj BOM)
             raw_bytes = base64.b64decode(r["kinesis"]["data"])
-            text = raw_bytes.decode("utf-8-sig", errors="replace")  # <-- było "utf-8"
+            text = raw_bytes.decode("utf-8-sig", errors="replace")
             log.info(f"Decoded payload preview: {text[:120]}")
-            payload = json.loads(text)
 
-
-            # 2) JSON → dict (walidacja podstawowa)
             payload = json.loads(text)
 
             symbol = str(payload["symbol"])
-            price = float(payload["price"])
-            ts = str(payload.get("timestamp") or (datetime.utcnow().isoformat() + "Z"))
+            # 👇 DynamoDB chce Decimal, nie float
+            price  = Decimal(str(payload["price"]))
+            ts     = str(payload.get("timestamp") or (datetime.utcnow().isoformat() + "Z"))
 
-            # 3) RAW → S3 (prefix 'raw/')
+            # RAW → S3
             key = f"raw/{datetime.utcnow().strftime('%Y/%m/%d/%H%M%S_%f')}.json"
             s3.put_object(
                 Bucket=RAW_BUCKET,
                 Key=key,
                 Body=json.dumps(payload).encode("utf-8"),
-                ContentType="application/json"
+                ContentType="application/json",
             )
 
-            # 4) CLEAN → DynamoDB
+            # CLEAN → DynamoDB
             table.put_item(Item={"symbol": symbol, "timestamp": ts, "price": price})
 
             ok += 1
-
         except Exception as e:
             fail += 1
             log.exception(f"Failed to process record: {e}")
