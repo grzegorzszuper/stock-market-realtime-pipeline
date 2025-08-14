@@ -4,4 +4,3 @@ variable "aws_region" {
   default     = "eu-west-3"
 }
 
-alert_email = "grzegorzszuper2@gmail.com"
