@@ -17,3 +17,7 @@ output "glue_database" { value = aws_glue_catalog_database.raw_db.name }
 output "glue_crawler"  { value = aws_glue_crawler.raw_crawler.name }
 output "athena_results_bucket" { value = aws_s3_bucket.athena_results.bucket }
 output "athena_workgroup"      { value = aws_athena_workgroup.wg.name }
+
+output "trends_lambda_name" { value = aws_lambda_function.trends.function_name }
+output "trends_lambda_arn"  { value = aws_lambda_function.trends.arn }
+output "trends_rule_name"   { value = aws_cloudwatch_event_rule.trends_every_2min.name }

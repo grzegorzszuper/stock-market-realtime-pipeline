@@ -36,3 +36,38 @@ resource "aws_lambda_event_source_mapping" "ingest_from_kinesis" {
   batch_size        = 100
   enabled           = true
 }
+
+# Lambda #2 (trends) – kod i funkcja
+locals {
+  trends_fn_name = "stock-trends-dd861484"
+  trends_log_grp = "/aws/lambda/${local.trends_fn_name}"
+}
+
+data "archive_file" "trends_zip" {
+  type        = "zip"
+  source_file = "${path.module}/../lambda/trends_handler.py"
+  output_path = "${path.module}/../lambda/trends_handler.zip"
+}
+
+resource "aws_lambda_function" "trends" {
+  function_name    = local.trends_fn_name
+  role             = aws_iam_role.trends_role.arn
+  runtime          = "python3.12"
+  handler          = "trends_handler.lambda_handler"
+  filename         = data.archive_file.trends_zip.output_path
+  source_code_hash = data.archive_file.trends_zip.output_base64sha256
+  timeout          = 30
+  memory_size      = 128
+  environment {
+    variables = {
+      DYNAMODB_TABLE = data.aws_dynamodb_table.cleaned_by_name.name
+      SNS_TOPIC_ARN  = aws_sns_topic.stock_alerts.arn
+    }
+  }
+}
+
+# krótka retencja logów
+resource "aws_cloudwatch_log_group" "trends" {
+  name              = local.trends_log_grp
+  retention_in_days = 3
+}

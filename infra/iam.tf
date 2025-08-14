@@ -167,3 +167,29 @@ resource "aws_iam_role_policy_attachment" "glue_attach_logs" {
 
 # pomocniczo: kto jest kontem (do ARN-ów wyżej)
 data "aws_caller_identity" "me" {}
+
+# Lambda #2 (trends) – IAM
+resource "aws_iam_role" "trends_role" {
+  name = "stock-trends-role-dd861484"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{ Effect="Allow", Principal={Service="lambda.amazonaws.com"}, Action="sts:AssumeRole"}]
+  })
+}
+
+data "aws_dynamodb_table" "cleaned_by_name" {
+  name = var.ddb_table_name
+}
+
+resource "aws_iam_role_policy" "trends_policy" {
+  name = "stock-trends-policy-dd861484"
+  role = aws_iam_role.trends_role.id
+  policy = jsonencode({
+    Version="2012-10-17",
+    Statement=[
+      { Effect="Allow", Action=["logs:CreateLogGroup","logs:CreateLogStream","logs:PutLogEvents"], Resource="*" },
+      { Effect="Allow", Action=["dynamodb:Query","dynamodb:Scan","dynamodb:GetItem"], Resource=data.aws_dynamodb_table.cleaned_by_name.arn },
+      { Effect="Allow", Action=["sns:Publish"], Resource=aws_sns_topic.stock_alerts.arn }
+    ]
+  })
+}
