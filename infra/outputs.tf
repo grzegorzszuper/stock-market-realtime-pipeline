@@ -21,3 +21,7 @@ output "athena_workgroup"      { value = aws_athena_workgroup.wg.name }
 output "trends_lambda_name" { value = aws_lambda_function.trends.function_name }
 output "trends_lambda_arn"  { value = aws_lambda_function.trends.arn }
 output "trends_rule_name"   { value = aws_cloudwatch_event_rule.trends_every_2min.name }
+
+output "sns_topic_arn" {
+  value = aws_sns_topic.stock_alerts.arn
+}
