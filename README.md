@@ -70,8 +70,11 @@ Alternatywnie: tools/producer.py (syntetyczne trendy dla szybszych testów).
 ### 4. Lambda + CloudWatch
 ![Lambda Ingest](./screens/lambda_ingest.png)
 ![CloudWatch Ingest](./screens/cw_ingest.png)
+![CloudWatch Ingest2](./screens/cw_ingest2.png)
+
 ![Lambda Trends](./screens/lambda_trends.png)
 ![CloudWatch Trends](./screens/cw_trends.png)
+![CloudWatch Trends2](./screens/cw_trends2.png)
 
 ### 5. Powiadomienia SNS
 ![SNS Email](./screens/sns_email.png)
