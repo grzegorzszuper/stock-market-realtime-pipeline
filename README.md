@@ -31,18 +31,18 @@ Serverless pipeline do pobierania, przetwarzania i analizowania danych giełdowy
 ## 🚀 Uruchomienie (Quick Start)
 
 ### 1. Deploy infrastruktury
-
+```bash
 cd infra
 terraform init -upgrade
 terraform apply -auto-approve
-
+```
 Po zakończeniu zapisz wartości z outputs.tf (nazwa strumienia Kinesis, buckety, topic SNS, nazwy Lambd).
 
-2. Potwierdź subskrypcję e-mail (SNS)
+### 2. Potwierdź subskrypcję e-mail (SNS)
 
 Sprawdź skrzynkę pocztową i kliknij Confirm subscription. Status w SNS = Confirmed.
 
-3. Odpal producenta danych (API)
+ ### 3. Odpal producenta danych (API)
 
 $env:AWS_REGION="eu-west-3"
 $env:KINESIS_STREAM="<kinesis_stream_name_z_outputs>"
@@ -64,6 +64,7 @@ Alternatywnie: tools/producer.py (syntetyczne trendy dla szybszych testów).
 
 **Athena – baza `stock_raw_db`**  
 ![Athena Query](./screens/athena_query.png)
+
 ![Athena Show Tables](./screens/athena_show_tables.png)
 
 ### 4. Lambda + CloudWatch
@@ -96,6 +97,7 @@ Zmienne środowiskowe (Configuration → Environment variables):
 🧪 Health-check (CLI)
 
 # S3 RAW – czy nowe pliki dochodzą?
+```bash
 aws s3 ls s3://<raw_bucket>/raw/ --region eu-west-3
 
 # DDB – szybki podgląd
@@ -113,7 +115,7 @@ aws lambda invoke --function-name <trends_lambda_name> --region eu-west-3 out.js
 
 # SNS – test publikacji
 aws sns publish --topic-arn <sns_topic_arn> --subject "Test" --message "hello" --region eu-west-3
-
+```
 🐞 Najczęstsze problemy
 
 Brak e-maila
@@ -141,10 +143,10 @@ Lambda, EventBridge, Glue: pay-per-use
 SNS: e-maile w darmowym limicie
 
 Aby wyłączyć infrastrukturę:
-
+```bash
 cd infra
 terraform destroy -auto-approve
-
+```
 👤 Autor
 Grzegorz Szuper
 
