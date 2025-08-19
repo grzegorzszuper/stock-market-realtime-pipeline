@@ -53,13 +53,11 @@ Alternatywnie: tools/producer.py (syntetyczne trendy dla szybszych testów).
 
 ✅ Test end-to-end (ze screenami)
 
-✅ Test end-to-end (ze screenami)
-
 ### 1. S3 RAW
-![S3 RAW](./screens/s3_raw.png)
+![S3 RAW](screens/s3_raw.png)
 
 ### 2. DynamoDB
-![DynamoDB](./screens/dynamodb.png)
+![DynamoDB](screens/dynamodb.png)
 
 ### 3. Glue + Athena
 **Glue Crawler – status Completed**  
