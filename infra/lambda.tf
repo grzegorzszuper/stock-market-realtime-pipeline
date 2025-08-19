@@ -60,7 +60,7 @@ resource "aws_lambda_function" "trends" {
   memory_size      = 128
   environment {
     variables = {
-      DYNAMODB_TABLE = data.aws_dynamodb_table.cleaned_by_name.name
+      DYNAMODB_TABLE = aws_dynamodb_table.clean.name
       SNS_TOPIC_ARN  = aws_sns_topic.stock_alerts.arn
     }
   }
