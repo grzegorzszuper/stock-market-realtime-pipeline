@@ -177,6 +177,8 @@ resource "aws_iam_role" "trends_role" {
   })
 }
 
+Resource = aws_dynamodb_table.clean.arn
+
 resource "aws_iam_role_policy" "trends_policy" {
   name = "stock-trends-policy-dd861484"
   role = aws_iam_role.trends_role.id
