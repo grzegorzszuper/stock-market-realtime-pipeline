@@ -62,7 +62,13 @@ resource "aws_lambda_function" "trends" {
     variables = {
       DYNAMODB_TABLE = aws_dynamodb_table.clean.name
       SNS_TOPIC_ARN  = aws_sns_topic.stock_alerts.arn
-    }
+
+      THRESH_PCT      = "1.5"   # próg zmiany % (np. 1.5%)
+      SMA_WINDOW      = "20"    # okno średniej kroczącej
+      LOOKBACK_POINTS = "15"    # ile ostatnich punktów porównywać
+      MIN_POINTS      = "20"    # minimalna liczba punktów do analizy
+      EPS_PCT         = "0.2"   # filtr szumu (odchyłka od SMA w %)
+      }
   }
 }
 
