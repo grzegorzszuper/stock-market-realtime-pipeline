@@ -53,39 +53,28 @@ Alternatywnie: tools/producer.py (syntetyczne trendy dla szybszych testów).
 
 ✅ Test end-to-end (ze screenami)
 
-1. S3 RAW
+### 1. S3 RAW
+![S3 RAW](./screens/s3_raw.png)
 
-(screens/s3_raw.png)
+### 2. DynamoDB
+![DynamoDB](./screens/dynamodb.png)
 
-2. DynamoDB
+### 3. Glue + Athena
+- Glue Crawler – status Completed  
+  ![Glue Crawler](./screens/glue_crawler.png)
 
-(screens/dynamodb.png)
+- Athena – baza stock_raw_db  
+  ![Athena Query](./screens/athena_query.png)
 
-3. Glue + Athena
+### 4. Lambda + CloudWatch
+![Lambda Ingest](./screens/lambda_ingest.png)  
+![CloudWatch Ingest](./screens/cw_ingest.png)  
+![Lambda Trends](./screens/lambda_trends.png)  
+![CloudWatch Trends](./screens/cw_trends.png)
 
-Glue Crawler – status Completed
-
-(screens/glue_crawler.png)
-
-Athena – baza stock_raw_db
-
-(screens/athena_query.png)
-
-4. Lambda + CloudWatch
-
-(screens/lambda_ingest.png)
-
-(screens/cw_ingest.png)
-
-(screens/lambda_trends.png)
-
-(screens/cw_trends.png)
-
-5. Powiadomienia SNS
-
-(screens/sns_email.png)
-
-(screens/alarm_sns_email.png)
+### 5. Powiadomienia SNS
+![SNS Email](./screens/sns_email.png)  
+![Alarm SNS Email](./screens/alarm_sns_email.png)
 
 🧠 Logika alertów (Lambda trends)
 
@@ -101,7 +90,7 @@ Warunki minimalne: MIN_POINTS rekordów oraz porównanie do LOOKBACK_POINTS wste
 
 Zmienne środowiskowe (Configuration → Environment variables):
 
-(screens/env_variables.png)
+![Environment Variables](./screens/env_variables.png)
 
 🧪 Health-check (CLI)
 
