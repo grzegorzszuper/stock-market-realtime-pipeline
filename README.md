@@ -64,7 +64,8 @@ Alternatywnie: tools/producer.py (syntetyczne trendy dla szybszych testów).
   ![Glue Crawler](./screens/glue_crawler.png)
 
 - Athena – baza stock_raw_db  
-  ![Athena Query](./screens/athena_query.png)
+  ![Athena Query](./screens/athena_query.png)  
+  ![Athena Show Tables](./screens/athena_show_tables.png)
 
 ### 4. Lambda + CloudWatch
 ![Lambda Ingest](./screens/lambda_ingest.png)  
