@@ -1,7 +1,7 @@
 data "archive_file" "ingest_zip" {
   type        = "zip"
   source_file = "${path.module}/../lambda/ingest_handler.py"
-  output_path = "${path.module}/ingest_lambda.zip"   # zostaw w katalogu infra
+  output_path = "${path.module}/ingest_lambda.zip" # zostaw w katalogu infra
 }
 
 resource "aws_lambda_function" "ingest" {
@@ -10,7 +10,7 @@ resource "aws_lambda_function" "ingest" {
   handler          = "ingest_handler.lambda_handler"
   runtime          = "python3.12"
   filename         = data.archive_file.ingest_zip.output_path
-  source_code_hash = data.archive_file.ingest_zip.output_base64sha256  # ⬅️ wymusza update
+  source_code_hash = data.archive_file.ingest_zip.output_base64sha256 # ⬅️ wymusza update
 
   timeout     = 15
   memory_size = 256

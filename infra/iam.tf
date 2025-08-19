@@ -57,8 +57,8 @@ resource "aws_iam_policy" "lambda_kinesis_read" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect   = "Allow"
-        Action   = [
+        Effect = "Allow"
+        Action = [
           "kinesis:DescribeStream",
           "kinesis:DescribeStreamSummary",
           "kinesis:GetRecords",
@@ -70,9 +70,9 @@ resource "aws_iam_policy" "lambda_kinesis_read" {
       },
       # optional: decrypt via Kinesis service (AWS-owned key)
       {
-        Effect    = "Allow"
-        Action    = ["kms:Decrypt"]
-        Resource  = "*"
+        Effect   = "Allow"
+        Action   = ["kms:Decrypt"]
+        Resource = "*"
         Condition = {
           StringEquals = {
             "kms:ViaService" = "kinesis.${var.aws_region}.amazonaws.com"
@@ -187,12 +187,12 @@ resource "aws_iam_role_policy" "trends_policy" {
     Statement = [
       {
         Effect   = "Allow"
-        Action   = ["logs:CreateLogGroup","logs:CreateLogStream","logs:PutLogEvents"]
+        Action   = ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"]
         Resource = "*"
       },
       {
         Effect   = "Allow"
-        Action   = ["dynamodb:Query","dynamodb:Scan","dynamodb:GetItem","dynamodb:DescribeTable","dynamodb:BatchGetItem"]
+        Action   = ["dynamodb:Query", "dynamodb:Scan", "dynamodb:GetItem", "dynamodb:DescribeTable", "dynamodb:BatchGetItem"]
         Resource = [aws_dynamodb_table.clean.arn]
       },
       {

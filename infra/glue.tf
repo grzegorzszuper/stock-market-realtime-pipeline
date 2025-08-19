@@ -22,7 +22,7 @@ resource "aws_glue_catalog_database" "raw_db" {
 # Crawler Glue do danych RAW w S3
 resource "aws_glue_crawler" "raw_crawler" {
   name          = "stock-raw-crawler"
-  role          = aws_iam_role.glue_role.arn           # rola z iam_glue.tf
+  role          = aws_iam_role.glue_role.arn # rola z iam_glue.tf
   database_name = aws_glue_catalog_database.raw_db.name
 
   s3_target {

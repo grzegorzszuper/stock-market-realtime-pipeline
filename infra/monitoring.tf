@@ -86,9 +86,9 @@ resource "aws_cloudwatch_metric_alarm" "kinesis_no_records" {
   namespace           = "AWS/Kinesis"
   metric_name         = "IncomingRecords"
   statistic           = "Sum"
-  period              = 600              # 10 min
+  period              = 600 # 10 min
   evaluation_periods  = 1
-  threshold           = 1                # <1 rekord / 10 min
+  threshold           = 1 # <1 rekord / 10 min
   comparison_operator = "LessThanThreshold"
   treat_missing_data  = "breaching"
 
@@ -107,7 +107,7 @@ resource "aws_cloudwatch_metric_alarm" "kinesis_iterator_age" {
   statistic           = "Maximum"
   period              = 300
   evaluation_periods  = 1
-  threshold           = 60000            # 60 s
+  threshold           = 60000 # 60 s
   comparison_operator = "GreaterThanThreshold"
   treat_missing_data  = "notBreaching"
 

@@ -1,7 +1,7 @@
 # S3 bucket na dane surowe (RAW)
 resource "aws_s3_bucket" "raw_data" {
-  bucket = "stock-raw-data-${random_id.bucket_suffix.hex}"
-  force_destroy = true  # usuwa zawartość razem z bucketem przy destroy
+  bucket        = "stock-raw-data-${random_id.bucket_suffix.hex}"
+  force_destroy = true # usuwa zawartość razem z bucketem przy destroy
 
   tags = {
     Project = "stock-pipeline"

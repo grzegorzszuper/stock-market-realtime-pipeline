@@ -1,8 +1,8 @@
 # Strumień Kinesis do ingestu danych w czasie rzeczywistym
 resource "aws_kinesis_stream" "stock_stream" {
   name             = "stock-stream-${random_id.bucket_suffix.hex}" # używa sufiksu z s3.tf
-  shard_count      = 1                   # minimalny koszt
-  retention_period = 24                  # 24h wystarczy do POC
+  shard_count      = 1                                             # minimalny koszt
+  retention_period = 24                                            # 24h wystarczy do POC
 
   # Tryb PROVISIONED jest najtańszy przy 1 shardzie
   stream_mode_details {
