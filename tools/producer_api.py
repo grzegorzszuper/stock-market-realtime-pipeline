@@ -37,4 +37,4 @@ while True:
         if not df.empty:
             price = df.tail(1)["Close"].values[0]
             send_record(sym, price)
-    time.sleep(60)  # aktualizacja co 60s
+    time.sleep(1)  # aktualizacja co 60s
