@@ -177,10 +177,6 @@ resource "aws_iam_role" "trends_role" {
   })
 }
 
-data "aws_dynamodb_table" "cleaned_by_name" {
-  name = var.ddb_table_name
-}
-
 resource "aws_iam_role_policy" "trends_policy" {
   name = "stock-trends-policy-dd861484"
   role = aws_iam_role.trends_role.id
