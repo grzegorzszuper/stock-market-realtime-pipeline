@@ -92,6 +92,7 @@ Alternatywnie: tools/producer.py (syntetyczne trendy dla szybszych testów).
 ![Glue Crawler](./screens/glue_crawler.png)
 
 **Athena – baza `stock_raw_db`**  
+
 ![Athena Show Tables](./screens/athena_show_tables.png)
 
 ![Athena Query](./screens/athena_query.png)
@@ -128,7 +129,7 @@ Zmienne środowiskowe (Configuration → Environment variables):
 
 🧪 Health-check (CLI)
 
-# S3 RAW – czy nowe pliki dochodzą?
+### S3 RAW – czy nowe pliki dochodzą?
 ```bash
 aws s3 ls s3://<raw_bucket>/raw/ --region eu-west-3
 
