@@ -17,6 +17,8 @@ Serverless pipeline do pobierania, przetwarzania i analizowania danych giełdowy
 6. **Lambda #2 – trends** – liczy sygnały (SMA/threshold) na danych z DynamoDB i publikuje do **SNS**.  
 7. **SNS** – wysyła e-maile z alertami giełdowymi lub o braku danych.
 
+![Architecture](./screens/architecture.png)
+
 ---
 
 ## 📂 Struktura projektu
