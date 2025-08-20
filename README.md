@@ -20,12 +20,39 @@ Serverless pipeline do pobierania, przetwarzania i analizowania danych giełdowy
 ---
 
 ## 📂 Struktura projektu
-
-
-
-
-
-
+```txt
+📁 Stock-Market-Realtime-Pipeline/
+├── 📁 infra/                 # Terraform – cała infrastruktura AWS
+│   ├── athena.tf
+│   ├── dynamodb.tf
+│   ├── eventbridge.tf
+│   ├── glue.tf
+│   ├── iam.tf
+│   ├── kinesis.tf
+│   ├── lambda.tf
+│   ├── monitoring.tf
+│   ├── outputs.tf
+│   ├── provider.tf
+│   ├── s3.tf
+│   ├── sns.tf
+│   ├── terraform.tfvars
+│   └── variables.tf
+│
+├── 📁 lambda/                # Kody funkcji AWS Lambda
+│   ├── ingest_handler.py     # przetwarzanie danych z Kinesis → S3 + DynamoDB
+│   └── trends_handler.py     # analiza trendów + powiadomienia
+│
+├── 📁 tools/                 # Skrypty pomocnicze / symulacja danych giełdowych
+│   ├── producer.py           # generuje przykładowe dane stock i wysyła do Kinesis
+│   └── producer_api.py       # wariant do pobierania danych np. z API (do rozbudowy)
+│
+├── 📁 screens/               # Zrzuty ekranu architektury i działania systemu
+│   └── (screenshots .png)    # np. Glue Crawler, Athena Query, DynamoDB itd.
+│
+├── out.json                  # przykładowy wynik / output testowy
+├── payload.json              # przykładowy event wejściowy do testów Lambdy
+└── README.md                 # dokumentacja projektu
+```
 ---
 
 ## 🚀 Uruchomienie (Quick Start)
@@ -63,9 +90,9 @@ Alternatywnie: tools/producer.py (syntetyczne trendy dla szybszych testów).
 ![Glue Crawler](./screens/glue_crawler.png)
 
 **Athena – baza `stock_raw_db`**  
-![Athena Query](./screens/athena_query.png)
-
 ![Athena Show Tables](./screens/athena_show_tables.png)
+
+![Athena Query](./screens/athena_query.png)
 
 ### 4. Lambda + CloudWatch
 ![Lambda Ingest](./screens/lambda_ingest.png)
